@@ -3,7 +3,6 @@ const app = express();
 const cors = require('cors');
 const path = require('path');
 const account = require('./API/AccountAPI.js');
-const { rejects } = require('assert');
 // the modules
 
 const port = 3001; // This is the port number
@@ -17,7 +16,7 @@ app.get('/', function(req, res){
 });
 
 app.post('/Account', function(req, res){ // The Making Account API
-    const command = `INSERT INTO user VALUES(\'${req.body['id']}\', \'${req.body['password']}\');`;
+    const command = `INSERT INTO user VALUES(\'${req.body['id']}\', \'${req.body['password']}\', \'${req.body['nickname']}\');`;
     account.Insert(command)
     .then(resolve => res.send(resolve))
     .catch(rejects => res.send(rejects));
@@ -25,6 +24,13 @@ app.post('/Account', function(req, res){ // The Making Account API
 
 app.post('/Account/Check', function(req, res){ // The Checking ID API
     const command = `SELECT * FROM user WHERE user_id = \'${req.body['id']}\'`;
+    account.Check(command)
+    .then(resolve => res.send(resolve))
+    .catch(rejects => console.log(rejects));
+});
+
+app.post('/Account/CheckNick', function(req, res){
+    const command = `SELECT * FROM user WHERE user_nickname = \'${req.body['nickname']}\'`;
     account.Check(command)
     .then(resolve => res.send(resolve))
     .catch(rejects => console.log(rejects));
