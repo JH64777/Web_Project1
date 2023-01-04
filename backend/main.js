@@ -3,7 +3,14 @@ const app = express();
 const cors = require('cors');
 const path = require('path');
 const account = require('./API/AccountAPI.js');
+const multer = require('multer');
+const DateNow = require('./API/time.js');
 // the modules
+
+const storage = multer.diskStorage({destination: (req,file,cb) => { cb(null, './downloadIMG/') }, filename: (req, file, cb) => { 
+    cb(null, file.fieldname + '-' + DateNow.Time)
+ }});
+const upload = multer({ storage: storage });
 
 const port = 3001; // This is the port number
 app.use(cors()); // for interacting frontend using API
@@ -29,7 +36,13 @@ app.post('/Account/Check', function(req, res){ // The Checking ID API
     .catch(rejects => console.log(rejects));
 });
 
-app.post('/Account/CheckNick', function(req, res){
+app.post('/IMG', upload.single('ImgFile'), function(req,res){
+    console.log(req.file);
+    console.log(req.file.filename);
+    res.send({'response' : 'Hello'});
+});
+
+app.post('/Account/CheckNick', function(req, res){ // The Checking NickName API
     const command = `SELECT * FROM user WHERE user_nickname = \'${req.body['nickname']}\'`;
     account.Check(command)
     .then(resolve => res.send(resolve))
