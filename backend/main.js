@@ -5,6 +5,7 @@ const path = require('path');
 const account = require('./API/AccountAPI.js');
 const multer = require('multer');
 const DateNow = require('./API/time.js');
+const Hashing = require('./API/encryt.js');
 // the modules
 
 const storage = multer.diskStorage({destination: (req,file,cb) => { cb(null, './downloadIMG/') }, filename: (req, file, cb) => { 
@@ -23,10 +24,16 @@ app.get('/', function(req, res){
 });
 
 app.post('/Account', function(req, res){ // The Making Account API
-    const command = `INSERT INTO user VALUES(\'${req.body['id']}\', \'${req.body['password']}\', \'${req.body['nickname']}\');`;
-    account.Insert(command)
-    .then(resolve => res.send(resolve))
-    .catch(rejects => res.send(rejects));
+    Hashing.Hash(req.body['password'])
+    .then((result) => { // Making command
+        const command = `INSERT INTO user VALUES(\'${req.body['id']}\', \'${result.value}\', \'${req.body['nickname']}\', \'${result.key}\');`;
+        return command;
+    })
+    .then((command) => { // Insert Data
+        account.Insert(command)
+        .then(resolve => res.send(resolve))
+        .catch(rejects => res.send(rejects));
+    });
 });
 
 app.post('/Account/Check', function(req, res){ // The Checking ID API
