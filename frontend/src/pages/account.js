@@ -32,7 +32,10 @@ function Account(){
                     if(data.response == 'error') { // if error occured
                         alert("Please check your id or nickname!");
                     }
-                    else { alert(data.response); } // if code work well then alert "Well Done!"
+                    else { 
+                        alert(data.response); // if code work well then alert "Well Done!"
+                        window.location = "http://localhost:3001/Login";
+                     }
                 });  
             }
             else { alert("Please Check your id or nickname!"); } // if check box no clicked
