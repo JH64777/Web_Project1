@@ -1,30 +1,44 @@
 import { useState, useRef } from 'react';
+import axios from 'axios';
+
 function Account(){
-    const [account, SetAccount] = useState({ id : '', password : '', nickname : '' });
+    const [account, SetAccount] = useState({ id : '', password : '', nickname : '', mail : '' });
+    const [Visible, SetVisible] = useState({visibility : "hidden"});
+    const [Code, SetCode] = useState(''); // to Insert and identify Code is right.
+    const ReceievedCode = useRef(''); // The Code will saved from Back
+    const checkValueCode = useRef({"response" : false});
     const checkValueID = useRef({"response" : false}); // The identifing Clicking check box ID
     const checkValueNN = useRef({"response" : false}); // The identifing Clicking check box NickName
 
     const handleChangeID = e => { // when the ID value is changed
-        SetAccount({ id: e.target.value, password: account.password, nickname : account.nickname });
+        SetAccount({ id: e.target.value, password: account.password, nickname : account.nickname, mail : account.mail });
         checkValueID.current = {"response" : false}; // For preventing hack
     }
 
     const handleChangePW = e => { // when the Password value is changed
-        SetAccount({ id: account.id, password: e.target.value, nickname : account.nickname });
+        SetAccount({ id: account.id, password: e.target.value, nickname : account.nickname, mail : account.mail });
     }
 
     const handleChangeNN = e => { // when the Nickname value is changed
-	    SetAccount({ id: account.id, password: account.password, nickname : e.target.value });
+	    SetAccount({ id: account.id, password: account.password, nickname : e.target.value, mail : account.mail });
         checkValueNN.current = {"response" : false}; // For preventing hack
     }
 
+    const handleChangeMail = e => {
+        SetAccount({ id: account.id, password: account.password, nickname : account.nickname, mail : e.target.value });
+    }
+
+    const handleChangeCode = e => {
+        SetCode(e.target.value);
+    }
+
     const handleSubmitt = e => { // when submitt button is clicked
-        if(account.id == '' || account.password == '' || account.nickname == '') // if empty id or password
+        if(account.id == '' || account.password == '' || account.nickname == '' || account.mail == '') // if empty id or password
         {
-            alert("You Don't Insert Value id or password or nickname!");
+            alert("You Don't Insert Value id or password or nickname or email!");
         }
         else { // if inserted values in id and password
-            if(checkValueID.current.response && checkValueNN.current.response){ // if check box clicked and there is no problem
+            if(checkValueID.current.response && checkValueNN.current.response & checkValueCode.current.response){ // if check box clicked and there is no problem
                 const postInfo = { method : "Post", headers : {'content-type' : 'application/json'}, body : JSON.stringify(account) } // The inform of message
                 fetch('http://localhost:3001/Account', postInfo) // send message
                 .then(response => response.json())
@@ -34,11 +48,11 @@ function Account(){
                     }
                     else { 
                         alert(data.response); // if code work well then alert "Well Done!"
-                        window.location = "http://localhost:3001/Login";
+                        window.location = "http://localhost:3001/Login"; // return to Login site
                      }
                 });  
             }
-            else { alert("Please Check your id or nickname!"); } // if check box no clicked
+            else { alert("Please Check your id or nickname or email!"); } // if check box no clicked
         }
         
     }
@@ -84,6 +98,32 @@ function Account(){
         }
     }
 
+    const handleSendmail = e => {
+        axios.post('/Account/SendMail', {mail : account.mail})
+        .then((res) => {
+            console.log(res.data.response);
+            if(res.data.response)
+            {
+                alert("Well Done! Please Check Code in Your Email");
+                SetVisible({ visibility : "visible" });
+                ReceievedCode.current = res.data.code; // To identifing Code is right
+            }
+            else {
+                alert("Please Check Your Email");
+            }
+        });
+    }
+
+    const handleCheckCode = e => {
+        if(Code == ReceievedCode.current){
+            alert("WelCome!");
+            checkValueCode.current = {"response" : true};
+        }
+        else{
+            alert("Please Check again your Code!");
+        }
+    }
+
     return (
         <div>
             <header>
@@ -97,6 +137,13 @@ function Account(){
                 <input type="password" value={account.password} onChange={handleChangePW} /><br />
 	    	    nickname<br />
 	    	    <input type="text" value={account.nickname} onChange={handleChangeNN} /><button onClick={handleCheckNN}>Check</button><br />
+                E-mail<br />
+                <input type="text" value={account.mail} onChange={handleChangeMail} /><button onClick={handleSendmail}>Sendmail</button>
+                <div style={Visible}>
+                    code<br />
+                    <input type="text" value={Code} onChange={handleChangeCode} /><button onClick={handleCheckCode}>sendCode</button>
+                </div>
+                <br />
                 <button onClick={handleSubmitt}>Submitt</button>
             </main>
         </div>
