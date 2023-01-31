@@ -38,7 +38,7 @@ function Account(){
             alert("You Don't Insert Value id or password or nickname or email!");
         }
         else { // if inserted values in id and password
-            if(checkValueID.current.response && checkValueNN.current.response & checkValueCode.current.response){ // if check box clicked and there is no problem
+            if(checkValueID.current.response && checkValueNN.current.response && checkValueCode.current.response){ // if check box clicked and there is no problem
                 const postInfo = { method : "Post", headers : {'content-type' : 'application/json'}, body : JSON.stringify(account) } // The inform of message
                 fetch('http://localhost:3001/Account', postInfo) // send message
                 .then(response => response.json())

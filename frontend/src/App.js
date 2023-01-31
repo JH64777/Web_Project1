@@ -5,6 +5,7 @@ import AI from './pages/ai';
 import Board from './pages/board';
 import Login from './pages/login';
 import Account from './pages/account';
+import Posting from './pages/writing';
 
 function App() {
   return (
@@ -15,7 +16,8 @@ function App() {
         <Route path="/AI" element={<AI />} />
         <Route path="/Board" element={<Board />} />
         <Route path="/Login" element={<Login />} />
-        <Route path="/Account" element={<Account />}/>
+        <Route path="/Account" element={<Account />} />
+        <Route path="/Board/Writing" element={<Posting />} />
       </Routes>
     </div>
   );
