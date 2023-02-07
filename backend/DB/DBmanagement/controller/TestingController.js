@@ -1,5 +1,5 @@
 const { sequelize } = require('../models');
-const model = require("../models/index");
+const model = require("../models");
 
 /*sequelize.sync({ force : false }) // these are function for connecting DB
 .then(() => {
@@ -8,15 +8,16 @@ const model = require("../models/index");
 .catch((err) => {
 	console.error(err);
 });
-*/
+*/ // I checked connecting DB is not be required
 
 function create() {
-	model.user.create({ // use model name to handle table || create is inserting data command
-		user_id : "Hello",
-		user_password : "Hello world!",
-		user_nickname : "DeangDeang",
-		salt_key : "234edkgawh",
-		Email : "Hello@Dog"
+	let table = 'user';
+	model[table].create({ // use model name to handle table || create is inserting data command
+		id : "Hifff!",
+		password : "Hello world!",
+		nickname : "dDeandddg",
+		Key : "234edkgawh",
+		mail : "Hello@D3"
 	})
 	.then(() => console.log("Data was inserted!"))
 	.catch((err) => console.log(err));
