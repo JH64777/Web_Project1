@@ -1,21 +1,21 @@
 {
   "development": {
     "username": "root",
-    "password": "rkfcl@13579",
+    "password": "your password",
     "database": "test",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "test": {
     "username": "root",
-    "password": "rkfcl@13579",
+    "password": "yours",
     "database": "test",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "production": {
     "username": "root",
-    "password": "rkfcl@13579",
+    "password": "yours",
     "database": "test",
     "host": "127.0.0.1",
     "dialect": "mysql"

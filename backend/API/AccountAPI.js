@@ -2,7 +2,6 @@ const mysql = require('mysql');
 const ConnectionData = { host : 'localhost', port : 3306, user : 'root', password : 'your password', database : 'test' };
 
 function InsertData(command){
-    let output; // the return value of this function
     const connection = mysql.createConnection(ConnectionData);
     connection.connect;
     return new Promise((resolve, rejects) => {
