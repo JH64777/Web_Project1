@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 import axios from 'axios';
 
 function Account(){
-    const [account, SetAccount] = useState({ id : '', password : '', nickname : '', mail : '' });
+    const [account, SetAccount] = useState({ user_id : '', user_password : '', user_nickname : '', Email : '' });
     const [Visible, SetVisible] = useState({visibility : "hidden"});
     const [Code, SetCode] = useState(''); // to Insert and identify Code is right.
     const ReceievedCode = useRef(''); // The Code will saved from Back
@@ -11,21 +11,21 @@ function Account(){
     const checkValueNN = useRef({"response" : false}); // The identifing Clicking check box NickName
 
     const handleChangeID = e => { // when the ID value is changed
-        SetAccount({ id: e.target.value, password: account.password, nickname : account.nickname, mail : account.mail });
+        SetAccount({ user_id: e.target.value, user_password: account.user_password, user_nickname : account.user_nickname, Email : account.Email });
         checkValueID.current = {"response" : false}; // For preventing hack
     }
 
     const handleChangePW = e => { // when the Password value is changed
-        SetAccount({ id: account.id, password: e.target.value, nickname : account.nickname, mail : account.mail });
+        SetAccount({ user_id: account.user_id, user_password: e.target.value, user_nickname : account.user_nickname, Email : account.Email });
     }
 
     const handleChangeNN = e => { // when the Nickname value is changed
-	    SetAccount({ id: account.id, password: account.password, nickname : e.target.value, mail : account.mail });
+	    SetAccount({ user_id: account.user_id, user_password: account.user_password, user_nickname : e.target.value, Email : account.Email });
         checkValueNN.current = {"response" : false}; // For preventing hack
     }
 
     const handleChangeMail = e => {
-        SetAccount({ id: account.id, password: account.password, nickname : account.nickname, mail : e.target.value });
+        SetAccount({ user_id: account.user_id, user_password: account.user_password, user_nickname : account.user_nickname, Email : e.target.value });
     }
 
     const handleChangeCode = e => {
@@ -33,7 +33,7 @@ function Account(){
     }
 
     const handleSubmitt = e => { // when submitt button is clicked
-        if(account.id == '' || account.password == '' || account.nickname == '' || account.mail == '') // if empty id or password
+        if(account.user_id == '' || account.user_password == '' || account.user_nickname == '' || account.Email == '') // if empty id or password
         {
             alert("You Don't Insert Value id or password or nickname or email!");
         }
@@ -58,11 +58,11 @@ function Account(){
     }
 
     const handleCheckID = e => {
-        if(account.id == ''){ // if ID is empty
+        if(account.user_id == ''){ // if ID is empty
             alert("You didn't insert ID!");
         }
         else { // ID is inserted from user
-            const postInfo = { method : "POST", headers : {'content-type' : 'application/json'}, body : JSON.stringify(account) }; // HTTP message information
+            const postInfo = { method : "POST", headers : {'content-type' : 'application/json'}, body : JSON.stringify({"user_id" : account.user_id}) }; // HTTP message information
             fetch('http://localhost:3001/Account/Check', postInfo)
             .then(response => response.json())
             .then((data) => {
@@ -79,11 +79,11 @@ function Account(){
     }
 
     const handleCheckNN = e => {
-	    if(account.nickname == ''){
+	    if(account.user_nickname == ''){
 		    alert("You didn't insert Your nickname!");
 	    }
         else{
-	        const postInfo = { method : "POST", headers : {'content-type' : 'application/json'}, body : JSON.stringify(account) };
+	        const postInfo = { method : "POST", headers : {'content-type' : 'application/json'}, body : JSON.stringify({"user_nickname" : account.user_nickname}) };
 	        fetch('http://localhost:3001/Account/CheckNick', postInfo)
 	        .then(response => response.json())
             .then((data) => {
@@ -99,7 +99,8 @@ function Account(){
     }
 
     const handleSendmail = e => {
-        axios.post('/Account/SendMail', {mail : account.mail})
+        if(account.Email != '')
+        {axios.post('/Account/SendMail', {Email : account.Email})
         .then((res) => {
             console.log(res.data.response);
             if(res.data.response)
@@ -111,7 +112,10 @@ function Account(){
             else {
                 alert("Please Check Your Email");
             }
-        });
+        });}
+        else{
+            alert("Please Insert currect Email!");
+        }
     }
 
     const handleCheckCode = e => {
@@ -132,13 +136,13 @@ function Account(){
             </header>
             <main>
                 id<br />
-                <input type="text" value={account.id} onChange={handleChangeID} /><button onClick={handleCheckID}>Check</button><br />
+                <input type="text" value={account.user_id} onChange={handleChangeID} /><button onClick={handleCheckID}>Check</button><br />
                 password<br />
-                <input type="password" value={account.password} onChange={handleChangePW} /><br />
+                <input type="password" value={account.user_password} onChange={handleChangePW} /><br />
 	    	    nickname<br />
-	    	    <input type="text" value={account.nickname} onChange={handleChangeNN} /><button onClick={handleCheckNN}>Check</button><br />
+	    	    <input type="text" value={account.user_nickname} onChange={handleChangeNN} /><button onClick={handleCheckNN}>Check</button><br />
                 E-mail<br />
-                <input type="text" value={account.mail} onChange={handleChangeMail} /><button onClick={handleSendmail}>Sendmail</button>
+                <input type="text" value={account.Email} onChange={handleChangeMail} /><button onClick={handleSendmail}>Sendmail</button>
                 <div style={Visible}>
                     code<br />
                     <input type="text" value={Code} onChange={handleChangeCode} /><button onClick={handleCheckCode}>sendCode</button>

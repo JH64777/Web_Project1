@@ -25,14 +25,14 @@ function PostingMain(){ // This contains the functions of inserting data from us
     }
 
     const handleSubmit = e => { // When submit button Clicked then send result to backend
-        let data = { time : GetDate(), name : "tester"};
-        let code = { num : GetCode(data.name, data.time) };
+        let data = { time : GetDate(), writer : "tester"};
+        let code = { codenum : GetCode(data.writer, data.time) };
         data = Object.assign(data, textgroup, code); // combine two objects
-        console.log(data); // well done
         if(!(textgroup.contents == '' || textgroup.title == ''))
         {
             axios.post('/Board/Posting', data)
-            .then(res => alert(res.data["response"]));
+            .then(res => alert(res.data["response"]))
+            .then(() => window.location = "http://localhost:3001/Board");
         } 
         else {
             alert("Fill data in title and contents!");

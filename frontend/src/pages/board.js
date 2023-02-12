@@ -14,7 +14,7 @@ function LoadTitle(props)
 }
 
 function Board(){
-  const num = [1,2,3,4,5];
+  const num = [1,2,3,4,5,6];
 
   const handleClick = e => {
     window.location = "http://localhost:3001/Board/Writing";
