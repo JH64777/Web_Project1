@@ -1,7 +1,9 @@
-// import axios from 'axios';
+import axios from 'axios';
+import { CountOfPost, RequestTitle } from "../functions/LoadPost.js";
 
 function LoadTitle(props)
 {
+  
   const numbers = props.numbers
   let index = numbers.map((numbers) => <li key={numbers.toString()}>{numbers * numbers}</li>);
   /* () => 13; == () => { return 13; } I didn't know This */
@@ -11,6 +13,11 @@ function LoadTitle(props)
       {index}
     </ul>
   );
+}
+
+function LoadBottomNav(){
+  const result = CountOfPost();
+  console.log(result);
 }
 
 function Board(){
@@ -30,6 +37,9 @@ function Board(){
                 <LoadTitle numbers = {num}/>
                 <button onClick={handleClick}>Write</button>
             </main>
+            <footer>
+              <LoadBottomNav />
+            </footer>
         </div>
     );
 }
