@@ -4,10 +4,14 @@ function Insert(table, value) { // You need to match column names in DB and valu
     return model[table].create(value);
 }
 
-function Select(table, value){ // You need to match column names in DB and value
+function SelectWhere(table, value){ // You need to match column names in DB and value
     return model[table].findAll({
         where : value
     })
 } // ex> Select * from user where user_nickname = "example" => table = 'user', value = { user_nickname : "example" }
 
-module.exports = {Insert : Insert, Select : Select};
+function SelectAll(table){
+    return model[table].findAll();
+}
+
+module.exports = {Insert : Insert, SelectWhere : SelectWhere, Select : SelectAll};

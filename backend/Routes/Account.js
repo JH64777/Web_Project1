@@ -21,7 +21,7 @@ router.post('/', (req, res) => {
 });
 
 router.post('/Check', function(req, res){ // The Checking ID
-    DB.Select('user', req.body)
+    DB.SelectWhere('user', req.body)
     .then((result) => {
         if(result.length == 0){
             res.send({"response" : true});
@@ -34,7 +34,7 @@ router.post('/Check', function(req, res){ // The Checking ID
 });
 
 router.post('/CheckNick', function(req, res){ // The Checking NickName
-    DB.Select('user', req.body)
+    DB.SelectWhere('user', req.body)
     .then((result) => {
         if(result.length == 0){
             res.send({"response" : true});
