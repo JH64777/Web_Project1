@@ -20,7 +20,7 @@ function Main() {
           <ol>
            <li><Link to="/Game">Game</Link></li>
            <li><Link  to="/AI">AI Contents</Link></li>
-           <li><Link to="/Board">bullet board</Link></li>
+           <li><Link to="/Board/1">bullet board</Link></li>
          </ol>
         </div>
         <Link to="/Login" style={ loginText }>You want to Login?</Link>
