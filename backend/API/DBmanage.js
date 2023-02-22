@@ -14,4 +14,12 @@ function SelectAll(table){
     return model[table].findAll();
 }
 
-module.exports = {Insert : Insert, SelectWhere : SelectWhere, Select : SelectAll};
+function SelectOffset(table, index, row){
+    return model[table].findAll({
+        attributes : row,
+        offset : index*5 - 5,
+        limit : index*5
+    });
+}
+
+module.exports = {Insert : Insert, SelectWhere : SelectWhere, Select : SelectAll, SelectLimit : SelectOffset};

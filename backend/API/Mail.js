@@ -2,8 +2,8 @@ const nodemailer = require('nodemailer');
 const Code = require('../API/RandNum');
 
 async function MailSender(mail){
-    const mailAddress = ""; // sender's Mail
-    const mailPassword = ""; // The password This Account
+    const mailAddress = "dlawlgud4@naver.com"; // sender's Mail
+    const mailPassword = "dlawlgud4@naver.com"; // The password This Account
     let code = await Code.CreateCode();
     let transporter = nodemailer.createTransport({
         host : "smtp.platform.com", // Your smtp Server name
@@ -16,7 +16,7 @@ async function MailSender(mail){
 
     return new Promise((resolve) => {
         transporter.sendMail({
-        from : `"Unknown" <address>`, // The sender's inform
+        from : `"Unknown" <dlawlgud4@naver.com>`, // The sender's inform
         to : mail, // reciever's address
         subject : "Title", // The subject of Mail
         text : `The code is: ${code}` // The contents of Mail

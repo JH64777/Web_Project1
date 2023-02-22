@@ -2,10 +2,12 @@ const express = require("express");
 const router = express.Router();
 const DB = require('../API/DBmanage.js');
 
-router.get("/:number", (req, res) => { // if you want to use parameter in URI use :(any names you want to use)
-    const p = req.params; // req.params have receieved parameter from Client
+router.get("/index", (req, res) => { // if you want to use parameter in URI use :(any names you want to use)
+    const p = req.query.index; // req.params have receieved parameter from Client
+    console.log(p);
     res.send(p);
 });
+
 
 router.post("/Count", (req,res) => {
     DB.Select("post")

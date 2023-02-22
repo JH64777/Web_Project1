@@ -7,10 +7,13 @@ const uploadImg = require('./Routes/Image');
 const Board = require('./Routes/BoardInfo');
 // the modules
 
+const options = { etag : false };
+app.use(express.static("public", options));
 const port = 3001; // This is the port number
 app.use(cors()); // for interacting frontend using API
 app.use(express.json()); // for using POST
 app.use(express.urlencoded({ extended : false })); // for using POST
+
 
 app.use('/', index); // index page
 app.use('/Account', signup); // sign up page
