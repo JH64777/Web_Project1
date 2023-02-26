@@ -1,10 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-
-const GetDate = () => { // making Time
-    const a = new Date();
-    return `${a.getFullYear()}-${a.getMonth() + 1}-${a.getDate()} ${a.getHours()}:${a.getMinutes()}:${a.getSeconds()}`;
-}
+import { now } from '../../functions/time';
 
 const GetCode = (name, time) => { // The code for recovering post we need to fix that
     const code = name + time;
@@ -25,14 +21,14 @@ function PostingMain(){ // This contains the functions of inserting data from us
     }
 
     const handleSubmit = e => { // When submit button Clicked then send result to backend
-        let data = { time : GetDate(), writer : "tester"};
+        let data = { time : now, writer : "tester"};
         let code = { codenum : GetCode(data.writer, data.time) };
         data = Object.assign(data, textgroup, code); // combine two objects
         if(!(textgroup.contents == '' || textgroup.title == ''))
         {
             axios.post('/Board/Posting', data)
             .then(res => alert(res.data["response"]))
-            .then(() => window.location = "http://localhost:3001/Board");
+            .then(() => window.location = "http://localhost:3001/Board/1");
         } 
         else {
             alert("Fill data in title and contents!");
@@ -50,7 +46,7 @@ function PostingMain(){ // This contains the functions of inserting data from us
     );
 }
 
-function Posting(){
+function Write(){
     return (
         <div>
             <header>
@@ -67,4 +63,4 @@ function Posting(){
     );
 }
 
-export default Posting;
+export default Write;

@@ -1,18 +1,29 @@
 import axios from 'axios';
 import { useEffect, useState } from "react";
 import { Link, useParams, useNavigate, Routes, Route} from "react-router-dom";
-import Posting from './writing';
-//<Link to="/Game">Game</Link>
-function LoadTitle(props)
+import Write from './writing';
+import {Posting, PostRoute} from './posting';
+
+function LoadTitle()
 {
-  
-  const numbers = props.numbers
-  let index = numbers.map((numbers) => <li key={numbers.toString()}>{numbers * numbers}</li>);
-  /* () => 13; == () => { return 13; } I didn't know This */
-  
+  const [title, SetTitle] = useState('');
+  const id = useParams().id;
+    useEffect(() => {
+    axios.get(`/Board/index/${id}`)
+    .then((result) => {
+      let list = [];
+      for(let i = 0 ; i < result.data.length; i++){
+        list.push(<li key={i}><Link to={`/Board/${id}/${result.data[i].num}`}>{result.data[i].title}</Link></li>);
+      }
+      return list;
+    })
+    .then(Title => SetTitle(Title))
+    .catch((err) => alert(err));}, [id]); // useEffect run callback function when Being rendered
+    // parameter id is checking that value is same thing when rendering is done if value is same then callback is not run but not same thing then run callback function
+
   return (
     <ul>
-      {index}
+      {title}
     </ul>
   );
 }
@@ -30,7 +41,7 @@ function LoadBottomNav(){
     axios.post("/Board/Count",{ request : 123 })
     .then((result) => {
       let ls = [];
-      for(let i = 1; i <= Math.ceil(50 / 5); i++)
+      for(let i = 1; i <= Math.ceil(result.data / 5); i++)
       {
         ls.push(<li style={style}><Link to={`/Board/${i}`}>{i}</Link></li>);
       }
@@ -42,17 +53,12 @@ function LoadBottomNav(){
   return(
     <ul>
       {List}
-      <Link to={"/Writing"}>Hello</Link>
     </ul>
   );
 }
 
 function Board(){
-  const num = [1,2,3,4,5,6];
-  const id = useParams();
   const navigation = useNavigate();
-  console.log(id);
-
     return (
         <div>
             <header>
@@ -60,8 +66,8 @@ function Board(){
                 <hr />
             </header>
             <main>
-                <LoadTitle numbers = {num}/>
-                <button onClick={()=>navigation('/Writing')}>Write</button>
+                <LoadTitle />
+                <button onClick={()=>navigation('/Board/Writing')}>Write</button>
             </main>
             <footer>
               <LoadBottomNav />
@@ -73,9 +79,11 @@ function Board(){
 function BoardRoute(){
   return (
     <Routes>
-      <Route path=':id' element={<Board />} />
+      <Route path='/:id' element={<Board />} />
+      <Route path='/:id/*' element={<PostRoute />} />
+      <Route path='/Writing' element={<Write />} />
     </Routes>
   );
 }
 
-export {BoardRoute, Board};
+export {Board, BoardRoute};

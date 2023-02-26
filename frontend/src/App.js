@@ -4,8 +4,7 @@ import Game from './pages/game';
 import AI from './pages/ai';
 import Login from './pages/login';
 import Account from './pages/account';
-import Posting from './pages/aboutBoard/writing';
-import {BoardRoute, Board} from './pages/aboutBoard/board';
+import {BoardRoute} from './pages/aboutBoard/board';
 
 function App() {
   return (
@@ -14,9 +13,7 @@ function App() {
         <Route path="/" element={<Main />} />
         <Route path="/Game" element={<Game />} />
         <Route path="/AI" element={<AI />} />
-        <Route path='/Board' element={<Board />} /> 
         <Route path="/Board/*" element={<BoardRoute />} /> {/* You can use dynamic parameter in URI using useParam() in Board.js*/}
-        <Route path='/Writing' element={<Posting />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/Account" element={<Account />} />
         <Route path='*' element={<h1>Not Found 404</h1>} />
