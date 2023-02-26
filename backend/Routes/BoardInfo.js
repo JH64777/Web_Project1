@@ -2,12 +2,25 @@ const express = require("express");
 const router = express.Router();
 const DB = require('../API/DBmanage.js');
 
-router.get("/index", (req, res) => { // if you want to use parameter in URI use :(any names you want to use)
-    const p = req.query.index; // req.params have receieved parameter from Client
-    console.log(p);
-    res.send(p);
-});
+router.get("/postnum/:num", (req, res) => {
+    DB.SelectWhere('post', { num : req.params.num })
+    .then(result => {
+        const response = [result[0].title, result[0].contents, result[0].writer, result[0].time];
+        res.send(response);
+    })
+})
 
+router.get("/index/:id", (req, res) => { // if you want to use parameter in URI use :(any names you want to use)
+    console.log(req.params.id)
+    DB.SelectLimit('post', req.params.id, ['title', 'num'])
+    .then((result) => {
+        res.send(result);
+    })
+    .catch(err => {
+        console.log(err);
+        res.send({ "response" : "error!" });
+    })
+});
 
 router.post("/Count", (req,res) => {
     DB.Select("post")
