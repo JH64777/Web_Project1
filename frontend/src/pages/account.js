@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import axios from 'axios';
+import Button from '../functions/BackButton';
 
 function Account(){
     const [account, SetAccount] = useState({ user_id : '', user_password : '', user_nickname : '', Email : '' });
@@ -150,6 +151,9 @@ function Account(){
                 <br />
                 <button onClick={handleSubmitt}>Submitt</button>
             </main>
+            <footer>
+                <Button path="/Login" name="login" /> 
+            </footer>
         </div>
     );
 }

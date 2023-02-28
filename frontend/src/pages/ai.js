@@ -1,6 +1,7 @@
 import loadimg from './images/default.png';
 import { useState } from 'react';
 import axios from 'axios';
+import Button from '../functions/BackButton';
 
 function AI(){
     const [photoV, SetPV] = useState(loadimg);
@@ -31,10 +32,13 @@ function AI(){
                 Insert Your Photo!<br />
                 <img src={ photoV } style={photoSize} alt="error" /><br />
                 <form onSubmit={handlesubmit} encType='multipart/form-data'>
-                    <input type="file" onChange={handleChange} name='ImgFile'/><br />
+                    <input type="file" onChange={handleChange} name='ImgFile' accept='image/*'/><br />
                     <button type="submit">submit</button>
                 </form>
             </main>
+            <footer>
+                <Button path="/" name="main" />
+            </footer>
         </div>
     );
 }
