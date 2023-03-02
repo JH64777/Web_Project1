@@ -18,7 +18,6 @@ function Main() {
         <div style={ box_style }>
           <h4>Here is our contents!</h4>
           <ol>
-           <li><Link to="/Game">Game</Link></li>
            <li><Link  to="/AI">AI Contents</Link></li>
            <li><Link to="/Board/1">bullet board</Link></li>
          </ol>
